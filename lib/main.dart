@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
           );
         },
         theme: ThemeData(
+          scaffoldBackgroundColor: Colors.deepPurple[100],
           primaryColor: primaryColor,
           textTheme: GoogleFonts.poppinsTextTheme(
             Theme.of(context).textTheme,

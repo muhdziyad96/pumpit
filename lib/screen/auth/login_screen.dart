@@ -1,9 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:pumpit/constant/color.dart';
+import 'package:pumpit/controller/home_controller.dart';
 import 'package:pumpit/screen/home/home_screen.dart';
 import 'package:sizer/sizer.dart';
 
@@ -23,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool canAuthenticate = false;
   bool englishLang = true;
   bool malayLang = false;
+  HomeController h = Get.find();
 
   @override
   void initState() {
@@ -70,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               signInBtn(),
+              noAccount(),
               socialIcon(),
               languageSelection(),
               touchIdLogin(),
@@ -125,14 +129,10 @@ class _LoginScreenState extends State<LoginScreen> {
           ? null
           : () async {
               if (_formKey.currentState!.validate()) {
-                // setState(() {
-                //   isLoading = true;
-                // });
                 // Preference.setBool(Preference.isLogin, true);
-                Get.offNamed('/home');
-                // setState(() {
-                //   isLoading = false;
-                // });
+                Get.offNamed('/home')?.then((value) {
+                  h.changeTabIndex(0);
+                });
               }
             },
       child: Container(
@@ -286,8 +286,12 @@ class _LoginScreenState extends State<LoginScreen> {
           if (didAuthenticate) {
             Future.delayed(const Duration(seconds: 2), () {
               // Preference.setBool(Preference.isLogin, true);
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HomeScreen())).then((value) {
+                h.changeTabIndex(0);
+              });
             });
           }
         } on PlatformException {
@@ -307,6 +311,28 @@ class _LoginScreenState extends State<LoginScreen> {
             child: const Text('Login with Touch ID'),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget noAccount() {
+    return Padding(
+      padding: EdgeInsets.all(2.1.w),
+      child: Text.rich(
+        TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Dont have an account ? ',
+            ),
+            TextSpan(
+                text: 'Sign Up !',
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 34, 84, 171),
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline),
+                recognizer: TapGestureRecognizer()..onTap = () {})
+          ],
+        ),
       ),
     );
   }
