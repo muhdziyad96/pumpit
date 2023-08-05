@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "620927082416",
+    "project_id": "pumpit-d064a",
+    "storage_bucket": "pumpit-d064a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620927082416:android:380d200388cf539b0a4075",
+        "android_client_info": {
+          "package_name": "com.example.pumpit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620927082416-8tset3jbq3kmphra7f8uqbp7o2smvtem.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4qnOLqWM1MLmpWntzIVAK09KhoJLkPRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620927082416-8tset3jbq3kmphra7f8uqbp7o2smvtem.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
