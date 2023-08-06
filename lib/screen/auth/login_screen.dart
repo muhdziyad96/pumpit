@@ -6,7 +6,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:pumpit/constant/color.dart';
 import 'package:pumpit/controller/home_controller.dart';
-import 'package:pumpit/screen/home/home_screen.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -286,10 +285,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (didAuthenticate) {
             Future.delayed(const Duration(seconds: 2), () {
               // Preference.setBool(Preference.isLogin, true);
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HomeScreen())).then((value) {
+              Get.offNamed('/home')?.then((value) {
                 h.changeTabIndex(0);
               });
             });

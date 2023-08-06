@@ -14,7 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: [
           SizedBox(
             height: 5.h,
@@ -34,6 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 2.1.w, horizontal: 4.2.w),
             child: Container(
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                   border: Border.all(color: primaryColor, width: 1),
                   borderRadius: BorderRadius.circular(10)),
@@ -47,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           SizedBox(
-            height: 5.h,
+            height: 2.5.h,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 2.1.w, horizontal: 4.2.w),
@@ -134,10 +135,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          Divider(
-            indent: 4.2.w,
-            endIndent: 4.2.w,
-            color: greyLess,
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 2.1.w, horizontal: 4.2.w),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  border: Border.all(color: primaryColor, width: 1),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: EdgeInsets.all(2.1.w),
+                child: const Text(
+                  'Update profile',
+                  style: TextStyle(fontSize: 14, color: primaryColor),
+                ),
+              ),
+            ),
           ),
         ],
       ),
