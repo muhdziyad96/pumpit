@@ -6,6 +6,11 @@ import 'package:local_auth/local_auth.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:pumpit/constant/color.dart';
 import 'package:pumpit/controller/home_controller.dart';
+import 'package:pumpit/controller/user_controller.dart';
+import 'package:pumpit/helper/sql_helper.dart';
+import 'package:pumpit/screen/shared/loading_dialog.dart';
+import 'package:pumpit/screen/shared/shared_button.dart';
+import 'package:pumpit/util/preference.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,13 +23,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController =
+      TextEditingController(text: '+60');
   final LocalAuthentication auth = LocalAuthentication();
   bool canAuthenticateWithBiometrics = false;
   bool canAuthenticate = false;
   bool englishLang = true;
   bool malayLang = false;
   HomeController h = Get.find();
+  UserController u = Get.find();
 
   @override
   void initState() {
@@ -32,11 +39,59 @@ class _LoginScreenState extends State<LoginScreen> {
     checkBiometrics();
   }
 
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
+
   checkBiometrics() async {
     canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
     setState(() {
       canAuthenticate = canAuthenticateWithBiometrics;
     });
+  }
+
+  Future<bool> loginUser(String phone) async {
+    Map<String, dynamic>? user =
+        await DatabaseHelper.instance.getUserLogin(phone);
+    if (user != null && user['phone'] == phone) {
+      return true; // Login successful
+    }
+    return false; // Login failed
+  }
+
+  showLoaderDialog() {
+    var alert = const LoadingDialog();
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void loginBtn(BuildContext context, [bool mounted = true]) async {
+    bool isLoggedIn = await loginUser(_phoneController.text);
+    if (isLoggedIn) {
+      showLoaderDialog();
+      await u.loginUsers(_phoneController.text).then((value) {
+        Get.offNamed('/home')?.then((value) {
+          h.changeTabIndex(0);
+        });
+      });
+    } else {
+      Get.snackbar(
+        'Error',
+        'Phone number is wrong or not exist',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        borderRadius: 8,
+        margin: EdgeInsets.symmetric(horizontal: 4.2.w, vertical: 1.23.h),
+        duration: const Duration(seconds: 3),
+      );
+    }
   }
 
   @override
@@ -71,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              signInBtn(),
+              signInBtn(context),
               noAccount(),
               socialIcon(),
               languageSelection(),
@@ -122,33 +177,16 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget signInBtn() {
-    return InkWell(
+  Widget signInBtn(BuildContext context) {
+    return SharedButton(
+      title: isLoading ? 'Loading' : 'Sign In',
       onTap: isLoading
           ? null
           : () async {
               if (_formKey.currentState!.validate()) {
-                // Preference.setBool(Preference.isLogin, true);
-                Get.offNamed('/home')?.then((value) {
-                  h.changeTabIndex(0);
-                });
+                loginBtn(context);
               }
             },
-      child: Container(
-        width: 100.w,
-        margin: EdgeInsets.symmetric(vertical: 1.85.h, horizontal: 4.2.w),
-        padding: EdgeInsets.all(4.2.w),
-        decoration: BoxDecoration(
-          color: isLoading ? greyLess : primaryColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Text(
-            isLoading ? 'Loading' : 'Sign In',
-            style: const TextStyle(color: whiteColor),
-          ),
-        ),
-      ),
     );
   }
 
@@ -284,7 +322,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           if (didAuthenticate) {
             Future.delayed(const Duration(seconds: 2), () {
-              // Preference.setBool(Preference.isLogin, true);
+              Preference.setBool(Preference.isLogin, true);
               Get.offNamed('/home')?.then((value) {
                 h.changeTabIndex(0);
               });
@@ -326,7 +364,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Color.fromARGB(255, 34, 84, 171),
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline),
-                recognizer: TapGestureRecognizer()..onTap = () {})
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Get.toNamed('/signUp')
+                        ?.then((value) => _phoneController.text = '+60');
+                  })
           ],
         ),
       ),

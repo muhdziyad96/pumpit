@@ -22,12 +22,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   redirectPage(int duration) {
     Timer(Duration(seconds: duration), () {
-      showOnboard ? Get.offNamed('/welcome') : Get.offNamed('/login');
+      showOnboard
+          ? Get.offNamed('/welcome')
+          : isLogin
+              ? Get.offNamed('/home')
+              : Get.offNamed('/login');
     });
   }
 
   onLoading() async {
-    redirectPage(2);
+    redirectPage(1);
   }
 
   @override

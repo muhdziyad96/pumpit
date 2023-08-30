@@ -6,15 +6,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pumpit/constant/color.dart';
 import 'package:pumpit/controller/geolocator_controller.dart';
 import 'package:pumpit/controller/home_controller.dart';
+import 'package:pumpit/controller/user_controller.dart';
 import 'package:pumpit/routes/app_pages.dart';
 import 'package:pumpit/service/route_service.dart';
 import 'package:pumpit/util/preference.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
+  // String masterCardNumber = "5112345678901234";
+  // String visaCardNumber = "4111111111111111";
   WidgetsFlutterBinding.ensureInitialized();
-  Get.lazyPut(() => HomeController());
-  Get.lazyPut(() => GeoLocatorController());
+  Get.lazyPut(() => HomeController(), fenix: true);
+  Get.lazyPut(() => GeoLocatorController(), fenix: true);
+  Get.lazyPut(() => UserController(), fenix: true);
   HttpOverrides.global = MyHttpOverrides();
   await Preference.init();
   Preference.getString(Preference.defaultLogin) ??
@@ -55,7 +59,7 @@ class MyApp extends StatelessWidget {
           );
         },
         theme: ThemeData(
-          scaffoldBackgroundColor: Colors.deepPurple[100],
+          // scaffoldBackgroundColor: Colors.deepPurple[100],
           primaryColor: primaryColor,
           textTheme: GoogleFonts.poppinsTextTheme(
             Theme.of(context).textTheme,
@@ -63,8 +67,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           fontFamily: GoogleFonts.poppins.toString(),
         ),
-
-        // initialRoute: '/splashScreen',
         initialRoute: '/splashScreen',
         getPages: AppPages.pageList,
       );

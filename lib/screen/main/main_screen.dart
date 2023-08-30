@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pumpit/constant/color.dart';
+import 'package:pumpit/controller/user_controller.dart';
 import 'package:sizer/sizer.dart';
 
 class MainScreen extends StatefulWidget {
@@ -10,6 +12,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  UserController u = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    u.getUsers();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,16 +28,19 @@ class _MainScreenState extends State<MainScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 2.1.w),
-              child: const Text(
-                'Hi Muhammad Ziyad,',
-                style: TextStyle(
-                    fontSize: 28,
-                    color: primaryColor,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
+            Obx(() {
+              return Padding(
+                padding:
+                    EdgeInsets.symmetric(vertical: 2.1.w, horizontal: 2.1.w),
+                child: Text(
+                  "Hi, ${u.userData.value.name ?? "Loading..."}",
+                  style: const TextStyle(
+                      fontSize: 28,
+                      color: primaryColor,
+                      fontWeight: FontWeight.bold),
+                ),
+              );
+            }),
             ListView(
               shrinkWrap: true,
               children: [

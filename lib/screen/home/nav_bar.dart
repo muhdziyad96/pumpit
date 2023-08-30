@@ -4,10 +4,10 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:pumpit/constant/color.dart';
 import 'package:pumpit/controller/geolocator_controller.dart';
 import 'package:pumpit/controller/home_controller.dart';
-import 'package:pumpit/screen/chart/chart_screen.dart';
 import 'package:pumpit/screen/main/main_screen.dart';
 import 'package:pumpit/screen/profile/profile_screen.dart';
 import 'package:pumpit/screen/setting/setting_screen.dart';
+import 'package:pumpit/screen/wallet/wallet_screen.dart';
 import 'package:pumpit/service/geolocator_service.dart';
 
 class CustomNavBar extends StatefulWidget {
@@ -23,7 +23,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
 
   final List<NavItem> _navItems = [
     NavItem(Icons.home, "Home"),
-    NavItem(Icons.bar_chart, "Chart"),
+    NavItem(Icons.wallet, "Wallet"),
     NavItem(Icons.people, "Profile"),
     NavItem(Icons.settings, "Setting"),
   ];
@@ -40,6 +40,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
+        heroTag: 'homeScreen',
         onPressed: () async {
           setState(() {
             g.isLoading = true;
@@ -72,7 +73,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               onPressed: () => _onNavItemTapped(index),
               icon: Icon(
                 item.icon,
-                color: h.tabIndex == index ? defaultColor : Colors.grey,
+                color: h.tabIndex == index ? whiteColor : Colors.grey,
               ),
             );
           }).toList(),
@@ -82,7 +83,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         index: h.tabIndex,
         children: const [
           MainScreen(),
-          ChartScreen(),
+          WalletScreen(),
           ProfileScreen(),
           SettingScreen(),
         ],

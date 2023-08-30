@@ -3,16 +3,11 @@ import 'dart:async' show Future;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preference {
-  static String userId = 'userId';
   static String isLogin = 'is_login';
+  static String userId = 'userId';
   static String showOnboard = 'showOnboard';
-  static String accessToken = 'accessToken';
-  static String refreshToken = 'refreshToken';
-  static String tCode = 'tCode';
-  static String selectedLanguage = 'selectedLanguage';
   static String defaultLogin = 'defaultLogin';
-  static String biometricEmail = 'biometricEmail';
-  static String biometricPassword = 'biometricPassword';
+  static String biometricPhone = 'biometricPhone';
   static String isDark = 'isDark';
 
   static SharedPreferences? _prefs;
