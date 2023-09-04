@@ -17,7 +17,7 @@ class PaymentCardScreen extends StatefulWidget {
 }
 
 class _PaymentCardScreenState extends State<PaymentCardScreen> {
-  PaymentCardController c = Get.put(PaymentCardController());
+  PaymentCardController p = Get.find();
 
   void _showBtmSheet() {
     showModalBottomSheet(
@@ -34,13 +34,13 @@ class _PaymentCardScreenState extends State<PaymentCardScreen> {
                 addCardFormField(
                   title: 'Card Name',
                   hintText: 'Muhammad Hafiy Azhar',
-                  controller: c.cardnameController,
+                  controller: p.cardnameController,
                 ),
                 addCardFormField(
                     title: 'Card Number',
                     hintText: '1234 5678 9012',
-                    controller: c.cardnumController,
-                    onChanged: c.onCardNumberChanged,
+                    controller: p.cardnumController,
+                    onChanged: p.onCardNumberChanged,
                     maxLength: 16),
                 Row(
                   children: [
@@ -49,14 +49,14 @@ class _PaymentCardScreenState extends State<PaymentCardScreen> {
                       child: addCardFormField(
                         title: 'Expired Date',
                         hintText: '07/2024',
-                        controller: c.expDateController,
+                        controller: p.expDateController,
                       ),
                     ),
                     Expanded(
                       flex: 2,
-                      child: Text(c.isMasterCard.value
+                      child: Text(p.isMasterCard.value
                           ? 'Master Card'
-                          : c.isVisa.value
+                          : p.isVisa.value
                               ? 'Visa'
                               : ''),
                     )
@@ -71,12 +71,12 @@ class _PaymentCardScreenState extends State<PaymentCardScreen> {
                         PaymentCard(
                           userid: int.parse(
                               Preference.getString(Preference.userId)!),
-                          cardname: c.cardnameController.text,
-                          cardnum: c.cardnumController.text,
-                          expDate: c.expDateController.text,
-                          cardType: c.isMasterCard.value
+                          cardname: p.cardnameController.text,
+                          cardnum: p.cardnumController.text,
+                          expDate: p.expDateController.text,
+                          cardType: p.isMasterCard.value
                               ? 'Master Card'
-                              : c.isVisa.value
+                              : p.isVisa.value
                                   ? 'Visa'
                                   : '',
                           // cardname: 'Zaxssx',
@@ -97,11 +97,11 @@ class _PaymentCardScreenState extends State<PaymentCardScreen> {
             );
           });
         }).then((value) {
-      c.isMasterCard.value = false;
-      c.isVisa.value = false;
-      c.cardnameController.clear();
-      c.cardnumController.clear();
-      c.expDateController.clear();
+      p.isMasterCard.value = false;
+      p.isVisa.value = false;
+      p.cardnameController.clear();
+      p.cardnumController.clear();
+      p.expDateController.clear();
     });
   }
 
@@ -151,15 +151,10 @@ class _PaymentCardScreenState extends State<PaymentCardScreen> {
           child: const Icon(Icons.add),
           onPressed: () async {
             _showBtmSheet();
-            // await DatabaseHelper.instance.addCard(
-            //   PaymentCard(
-            //       cardname: "test",
-            //       userid: int.parse(Preference.getString(Preference.userId)!)),
-            // );
           }),
       body: Center(
         child: FutureBuilder<List<PaymentCard>>(
-            future: c.getPaymentCard(),
+            future: p.getPaymentCard(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<PaymentCard>> snapshot) {
               if (!snapshot.hasData) {
@@ -197,7 +192,7 @@ class _PaymentCardScreenState extends State<PaymentCardScreen> {
                                         padding: EdgeInsets.only(
                                             top: 8.5.h, left: 4.2.w),
                                         child: Text(
-                                          c.formatCreditCardNumber(
+                                          p.formatCreditCardNumber(
                                               card.cardnum!),
                                           style: const TextStyle(
                                               letterSpacing: 2.5),

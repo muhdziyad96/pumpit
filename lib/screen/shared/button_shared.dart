@@ -5,7 +5,9 @@ import 'package:sizer/sizer.dart';
 class SharedButton extends StatefulWidget {
   final String title;
   final void Function()? onTap;
-  const SharedButton({super.key, required this.title, this.onTap});
+  final double? paddingValue;
+  const SharedButton(
+      {super.key, required this.title, this.onTap, this.paddingValue});
 
   @override
   State<SharedButton> createState() => _SharedButtonState();
@@ -15,7 +17,7 @@ class _SharedButtonState extends State<SharedButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 2.1.w, horizontal: 4.2.w),
+      padding: EdgeInsets.all(widget.paddingValue ?? 4.2.w),
       child: InkWell(
         onTap: widget.onTap,
         child: Container(

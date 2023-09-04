@@ -6,6 +6,7 @@ import 'package:pumpit/controller/geolocator_controller.dart';
 import 'package:pumpit/controller/home_controller.dart';
 import 'package:pumpit/screen/main/main_screen.dart';
 import 'package:pumpit/screen/profile/profile_screen.dart';
+import 'package:pumpit/screen/qr/qr_screen.dart';
 import 'package:pumpit/screen/setting/setting_screen.dart';
 import 'package:pumpit/screen/wallet/wallet_screen.dart';
 import 'package:pumpit/service/geolocator_service.dart';
@@ -24,6 +25,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
   final List<NavItem> _navItems = [
     NavItem(Icons.home, "Home"),
     NavItem(Icons.wallet, "Wallet"),
+    NavItem(PhosphorIcons.qrCode, "Qr Code"),
     NavItem(Icons.people, "Profile"),
     NavItem(Icons.settings, "Setting"),
   ];
@@ -37,7 +39,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         heroTag: 'homeScreen',
@@ -84,6 +86,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         children: const [
           MainScreen(),
           WalletScreen(),
+          QrScreen(),
           ProfileScreen(),
           SettingScreen(),
         ],

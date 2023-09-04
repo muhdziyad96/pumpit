@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pumpit/model/payment_card_model.dart';
+import 'package:pumpit/model/transaction_model.dart';
 import 'package:pumpit/model/user_model.dart';
 import 'package:pumpit/model/wallet_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -60,6 +61,21 @@ class DatabaseHelper {
       FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE
       )
       ''');
+
+    await db.execute('''
+    CREATE TABLE transactions (
+      transactionid INTEGER PRIMARY KEY,
+      userid INTEGER,
+      walletid INTEGER,
+      cardid INTEGER,
+      transactionsamount REAL,
+      transactionType TEXT,
+      transactionDate TEXT,
+      FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE
+      FOREIGN KEY (walletid) REFERENCES wallet(walletid) ON DELETE CASCADE
+      FOREIGN KEY (cardid) REFERENCES cards(cardid) ON DELETE CASCADE
+      )
+      ''');
   }
 
   Future<Map<String, dynamic>?> getUserLogin(String phone) async {
@@ -99,6 +115,15 @@ class DatabaseHelper {
     return await db.insert(
       'wallet',
       Wallet.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<int> addTransaction(Transactions transaction) async {
+    Database db = await instance.database;
+    return await db.insert(
+      'transactions',
+      transaction.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }

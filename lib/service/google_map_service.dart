@@ -24,9 +24,6 @@ class GoogleMapService {
           List.from(results.map((data) => Result.fromJson(data)));
 
       print(responseData['status']);
-
-      results = responseData['results'];
-      gasStations = List.from(results.map((data) => Result.fromJson(data)));
       return gasStations;
     } catch (e) {
       return Future.error(e);
